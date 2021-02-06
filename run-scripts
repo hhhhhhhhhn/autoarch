@@ -1,0 +1,13 @@
+#!/bin/sh
+
+find ./scripts -type f | sort | xargs cat > "$DIR/script"
+
+chmod +x "$DIR/script"
+
+grep -o "^#:" "$DIR/script" | wc -l > "$DIR/total"
+
+# expressions are ment to be in single quotes
+#shellcheck disable=SC2016
+sed 's|^#: \(.*\)|echo "\1" > "$DIR/current" \&\& expr `cat "$DIR/done"` + 1 > "$DIR/done"|' -i "$DIR/script"
+
+. /tmp/autoarch/script

@@ -1,0 +1,102 @@
+#!/bin/sh
+
+cd "$(dirname "$0")" || exit
+
+echo Testing connection...
+
+while ! ping archlinux.org -c 1 > /dev/null; do
+	echo Please connect to the internet!
+	echo Press enter to try again or control+c to open the wifi-menu
+	read -r || wifi-menu
+	clear
+	echo Testing connection...
+done
+
+clear
+echo Please wait while installing some dependencies...
+pacman --noconfirm -S --needed dialog >/dev/null
+
+dialog --yesno \
+	"Welcome to the autoarch installation! Do you want to continue?" 0 0 \
+	|| exit 1
+
+KEYMAP=$(
+	find /usr/share/kbd/keymaps -name "*.map.gz" \
+		| sed "s|.map.gz||" \
+		| sort \
+		| sed -e "s|.*/||" -e "/$/G" \
+		| xargs -d "\n" \
+		dialog --stdout --menu "Please select keyboard layout" -1 -1 -1
+)
+
+TIMEZONE=$(
+	find /usr/share/zoneinfo/ -type f \
+		| sort \
+		| sed -e "s|/usr/share/zoneinfo/||" -e "/$/G" \
+		| xargs -d "\n" \
+		dialog --stdout --menu "Select a Timezone" -1 -1 -1
+)
+
+LOCALES=$(
+	printf "en_US.UTF-8 UTF-8|"
+	tail -n +32 </etc/locale.gen \
+		| sed -e "/$/G" -e "/$/G" -e "s/^#//" -e "/en_US/d" \
+		| xargs -d "\n" \
+			dialog --stdout --separate-output --separator "|" --checklist \
+			"Select locales (en_US is always on)" -1 0 -1 \
+)
+
+USERNAME=$(
+	dialog --stdout --inputbox "Enter your username" 0 0
+)
+
+USERPASSWORD=$(
+	dialog --stdout --insecure --passwordbox \
+		"Enter the password for $USERNAME" 0 0
+)
+
+ROOTPASSWORD=$(
+	if dialog --stdout --yesno "Use same password for the root user?" 0 0; then
+		echo "$USERPASSWORD"
+	else
+		dialog --stdout --insecure --passwordbox \
+			"Enter the password for root" 0 0
+	fi
+)
+
+DRIVE=$(
+	lsblk -rSo NAME,MODEL,SIZE \
+		| tail -n +2 \
+		| sed "s/ /|/" \
+		| tr "\n" "|" \
+		| tr "|" "\n" \
+		| xargs -d "\n" \
+			dialog --stdout --menu "Select a disk" 0 0 0                                                                   
+)
+
+dialog --yesno \
+	"The installation will wipe the contents of $DRIVE, continue?" 0 0 || exit
+
+DIR=/tmp/autoarch
+rm -rf "$DIR"
+mkdir "$DIR"
+
+echo "100" > "$DIR/total" # temporary
+echo "0" > "$DIR/done" # temporary
+
+. ./run-scripts >/dev/null 2>&1 &
+
+while true; do
+	sleep 1
+	TOTAL=$(cat "$DIR/total")
+	DONE=$(cat "$DIR/done")
+	[ "$TOTAL" = "$DONE" ] && break
+	echo XXX
+	expr "$DONE" "*" "100" "/" "$TOTAL"
+	CURRENT=$(tr -d "\n" <"$DIR/current")
+	echo "Setting up $CURRENT"
+done | dialog --gauge "Setting up..." 0 0
+
+dialog --yesno "Done! Restart now?" 0 0 && reboot
+
+true
