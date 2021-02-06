@@ -1,6 +1,6 @@
 #!/bin/sh
 
-find ./scripts -type f | sort | xargs cat > "$DIR/script"
+find ./scripts -type f -not name "*chroot*" | sort | xargs cat > "$DIR/script"
 
 chmod +x "$DIR/script"
 

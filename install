@@ -29,6 +29,8 @@ KEYMAP=$(
 		dialog --stdout --menu "Please select keyboard layout" -1 -1 -1
 )
 
+loadkeys "$KEYMAP"
+
 TIMEZONE=$(
 	find /usr/share/zoneinfo/ -type f \
 		| sort \
