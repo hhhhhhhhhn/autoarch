@@ -1,4 +1,7 @@
 #!/bin/sh
+#: Mount
+mount "/dev/$DRIVE" /boot
+
 #: Configuration
 ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime
 hwclock --systohc
