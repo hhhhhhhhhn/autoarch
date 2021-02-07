@@ -1,6 +1,4 @@
 #!/bin/sh
-cat "$0"
-env
 #: Configuration
 ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime
 hwclock --systohc
