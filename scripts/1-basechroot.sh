@@ -14,7 +14,7 @@ useradd -m -G wheel "$USERNAME"
 yes "$USERPASSWORD" | passwd "$USERNAME"
 
 #: Bootloader
-grub-install "--target=$(uname -m | grep 64 && echo x86_64 || echo i386)-efi" --recheck --removable --efi-directory=/boot/EFI --boot-directory=/boot
+grub-install "--target=$(uname -m | grep 64 >/dev/null && echo x86_64 || echo i386)-efi" --recheck --removable --efi-directory=/boot/EFI --boot-directory=/boot
 
 grub-install --target=i386-pc --recheck --boot-directory=/boot "/dev/$DRIVE"
 
