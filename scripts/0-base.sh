@@ -3,7 +3,7 @@
 timedatectl set-ntp true
 
 #: Partitions
-dd if=/dev/zero "of=/dev/$DRIVE" bs=1024 count=1 conv=notrunc
+wipefs -a "/dev/$DRIVE"
 
 gdisk "/dev/$DRIVE" < assets/gdisk.txt
 
