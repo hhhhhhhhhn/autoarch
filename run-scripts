@@ -12,7 +12,8 @@ expr 1 + $(cat ./scripts/* | grep -o "^#:" | wc -l) > "$DIR/total"
 sed 's|^#: \(.*\)|echo "\1" > "$DIR/current" \&\& expr `cat "$DIR/done"` + 1 > "$DIR/done"|' -i "$DIR/script"
 
 # Yes, the file exists
-#shellcheck disable=1091 . /tmp/autoarch/script
+#shellcheck disable=1091
+. /tmp/autoarch/script
 
 echo "KEYMAP='$KEYMAP'" > /mnt/chrootscript
 echo "TIMEZONE='$TIMEZONE'" >> /mnt/chrootscript
