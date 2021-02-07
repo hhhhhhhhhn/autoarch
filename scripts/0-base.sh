@@ -14,7 +14,7 @@ mount "/dev/${DRIVE}3" /mnt
 mkdir -p /mnt/boot/EFI
 mount "/dev/${DRIVE}2" /mnt/boot/EFI
 
-genfstab -U /mnt >> /mnt/etc/fstab
-
 #: Base system
 pacstrap /mnt base linux linux-firmware grub
+
+genfstab -U /mnt >> /mnt/etc/fstab
