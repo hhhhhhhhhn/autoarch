@@ -23,6 +23,8 @@ echo "USERPASSWORD='$USERPASSWORD'" >> /mnt/chrootscript
 echo "ROOTPASSWORD='$ROOTPASSWORD'" >> /mnt/chrootscript
 echo "DRIVE='$DRIVE'" >> /mnt/chrootscript
 
+umount /mnt/boot
+
 cat <"$DIR/chrootscript" >>/mnt/chrootscript
 chmod +x /mnt/chrootscript
 

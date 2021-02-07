@@ -25,6 +25,3 @@ grub-install "--target=$(uname -m | grep 64 >/dev/null && echo x86_64 || echo i3
 grub-install --target=i386-pc --recheck --boot-directory=/mnt/boot "/dev/$DRIVE"
 
 grub-install --target=i386-pc --recheck --boot-directory=/mnt/boot "/dev/${DRIVE}3"
-
-grub-mkconfig -o /mnt/boot/grub/grub.cfg
-
