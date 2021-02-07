@@ -86,7 +86,7 @@ mkdir "$DIR"
 echo "100" > "$DIR/total" # temporary
 echo "0" > "$DIR/done" # temporary
 
-. ./run-scripts >/dev/null 2>&1 &
+. ./run-scripts >"$DIR/log" 2>&1 &
 
 while true; do
 	sleep 1

@@ -1,13 +1,26 @@
 #!/bin/sh
 
-find ./scripts -type f -not name "*chroot*" | sort | xargs cat > "$DIR/script"
+find ./scripts -type f -not -name "*chroot*" | sort | xargs cat > "$DIR/script"
 
 chmod +x "$DIR/script"
+chmod +x "$DIR/chrootscript"
 
-grep -o "^#:" "$DIR/script" | wc -l > "$DIR/total"
+expr 1 + $(cat ./scripts/* | grep -o "^#:" | wc -l) > "$DIR/total"
 
 # expressions are ment to be in single quotes
 #shellcheck disable=SC2016
 sed 's|^#: \(.*\)|echo "\1" > "$DIR/current" \&\& expr `cat "$DIR/done"` + 1 > "$DIR/done"|' -i "$DIR/script"
 
+# Yes, the file exists
+#shellcheck disable=1091
 . /tmp/autoarch/script
+
+env | sed -e "s/=/='/" -e "s/$/'/" > mnt/chrootscript
+cat <"$DIR/chrootscript" >>/mnt/chrootscript
+chmod +x /mnt/chrootscript
+
+echo "$DIR/current"
+chroot /mnt ./chrootscript
+rm /mnt/chrootscript
+
+cat <"$DIR/total" >"$DIR/done"
