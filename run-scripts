@@ -15,7 +15,7 @@ sed 's|^#: \(.*\)|echo "\1" > "$DIR/current" \&\& expr `cat "$DIR/done"` + 1 > "
 #shellcheck disable=1091
 . /tmp/autoarch/script
 
-env | sed -e "s/=/='/" -e "s/$/'/" > mnt/chrootscript
+env | sed -e "s/=/='/" -e "s/$/'/" > /mnt/chrootscript
 cat <"$DIR/chrootscript" >>/mnt/chrootscript
 chmod +x /mnt/chrootscript
 
