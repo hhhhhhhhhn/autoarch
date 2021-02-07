@@ -1,7 +1,4 @@
 #!/bin/sh
-#: Mount
-mount "/dev/$DRIVE" /boot
-
 #: Configuration
 ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime
 hwclock --systohc
@@ -18,10 +15,4 @@ useradd -m -G wheel "$USERNAME"
 yes "$USERPASSWORD" | passwd "$USERNAME"
 
 #: Bootloader
-grub-install "--target=$(uname -m | grep 64 >/dev/null && echo x86_64 || echo i386)-efi" --recheck --removable --efi-directory=/boot/EFI --boot-directory=/boot
-
-grub-install --target=i386-pc --recheck --boot-directory=/boot "/dev/$DRIVE"
-
-grub-install --target=i386-pc --recheck --boot-directory=/boot "/dev/${DRIVE}3"
-
 grub-mkconfig -o /boot/grub/grub.cfg

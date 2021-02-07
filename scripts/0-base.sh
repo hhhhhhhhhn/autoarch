@@ -18,3 +18,12 @@ mount "/dev/${DRIVE}2" /mnt/boot/EFI
 pacstrap /mnt base linux linux-firmware grub
 
 genfstab -U /mnt >> /mnt/etc/fstab
+
+#: Bootloader
+grub-install "--target=$(uname -m | grep 64 >/dev/null && echo x86_64 || echo i386)-efi" --recheck --removable --efi-directory=/mnt/boot/EFI --boot-directory=/mnt/boot
+
+grub-install --target=i386-pc --recheck --boot-directory=/mnt/boot "/dev/$DRIVE"
+
+grub-install --target=i386-pc --recheck --boot-directory=/mnt/boot "/dev/${DRIVE}3"
+
+
