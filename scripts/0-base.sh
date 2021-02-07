@@ -26,4 +26,5 @@ grub-install --target=i386-pc --recheck --boot-directory=/mnt/boot "/dev/$DRIVE"
 
 grub-install --target=i386-pc --recheck --boot-directory=/mnt/boot "/dev/${DRIVE}3"
 
+grub-mkconfig -o /mnt/boot/grub/grub.cfg
 

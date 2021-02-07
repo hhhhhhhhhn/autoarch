@@ -1,4 +1,6 @@
 #!/bin/sh
+cat "$0"
+env
 #: Configuration
 ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime
 hwclock --systohc
@@ -13,6 +15,3 @@ echo Arch > /etc/hostname
 yes "$ROOTPASSWORD" | passwd
 useradd -m -G wheel "$USERNAME"
 yes "$USERPASSWORD" | passwd "$USERNAME"
-
-#: Bootloader
-grub-mkconfig -o /boot/grub/grub.cfg
