@@ -9,6 +9,8 @@ locale-gen
 echo "LANG=$(tail -n 1 < /etc/locale.gen | sed "s/\s*$//")" > /etc/locale.conf
 echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
 echo Arch > /etc/hostname
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+systemctl enable NetworkManager
 
 yes "$ROOTPASSWORD" | passwd
 useradd -m -G wheel "$USERNAME"

@@ -15,7 +15,7 @@ mkdir -p /mnt/boot/EFI
 mount "/dev/${DRIVE}2" /mnt/boot/EFI
 
 #: Base system
-pacstrap /mnt base linux linux-firmware grub
+pacstrap /mnt base linux linux-firmware grub networkmanager sudo
 
 genfstab -U /mnt >> /mnt/etc/fstab
 

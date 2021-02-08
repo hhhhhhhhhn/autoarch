@@ -1,7 +1,8 @@
 #!/bin/sh
 
-find ./scripts -type f -not -name "*chroot*" | sort | xargs cat > "$DIR/script"
-find ./scripts -type f -name "*chroot*" | sort | xargs cat > "$DIR/chrootscript"
+find ./scripts -type f -not -name "*chroot*" -not -name "*user*" | sort | xargs cat > "$DIR/script"
+find ./scripts -type f -name "*chroot*" -not -name "*user*" | sort | xargs cat > "$DIR/chrootscript"
+find ./scripts -type f -name "*user*" -not -name "*chroot*" | sort | xargs cat > "$DIR/userscript"
 
 chmod +x "$DIR/script"
 
@@ -23,13 +24,20 @@ echo "USERPASSWORD='$USERPASSWORD'" >> /mnt/chrootscript
 echo "ROOTPASSWORD='$ROOTPASSWORD'" >> /mnt/chrootscript
 echo "DRIVE='$DRIVE'" >> /mnt/chrootscript
 
-umount /mnt/boot
+cp /mnt/chrootscript /mnt/userscript
+
+umount /mnt/boot/EFI
 
 cat <"$DIR/chrootscript" >>/mnt/chrootscript
-chmod +x /mnt/chrootscript
+echo "cd /home/$USERNAME" >> /mnt/chrootscript
+echo "cp /userscript ." >> /mnt/chrootscript
+echo "sudo -H -u $USERNAME ./userscript" >> /mnt/chrootscript
+echo "rm userscript" >> /mnt/chrootscript
 
-echo "$DIR/current"
+cat <"$DIR/userscript" >>/mnt/userscript
+chmod +x /mnt/chrootscript
+chmod +x /mnt/userscript
+
 chroot /mnt ./chrootscript
-rm /mnt/chrootscript
 
 cat <"$DIR/total" >"$DIR/done"
