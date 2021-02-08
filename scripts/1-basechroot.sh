@@ -14,4 +14,4 @@ yes "$ROOTPASSWORD" | passwd
 useradd -m -G wheel "$USERNAME"
 yes "$USERPASSWORD" | passwd "$USERNAME"
 
-grub-mkconfig -o /mnt/boot/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
