@@ -36,6 +36,6 @@ cat <"$DIR/userscript" >>/mnt/userscript
 chmod +x /mnt/chrootscript
 chmod +x /mnt/userscript
 
-chroot /mnt ./chrootscript
+arch-chroot /mnt ./chrootscript
 
 cat <"$DIR/total" >"$DIR/done"
