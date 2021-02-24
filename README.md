@@ -28,9 +28,6 @@ here, note that the name of the scripts is important:
 use `#: NAME` to denote the steps being taken to show them in the progress bar
 
 some important enviroment variables are available to you,
-namely the ones from the []
-
-some important enviroment variables are available to you,
 namely the ones from the [install](./install) script.
 
 see the [default scripts/ folder](./scripts) for an example
