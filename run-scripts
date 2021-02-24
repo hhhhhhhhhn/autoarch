@@ -26,8 +26,6 @@ echo "DRIVE='$DRIVE'" >> /mnt/chrootscript
 
 cp /mnt/chrootscript /mnt/userscript
 
-umount /mnt/boot/EFI
-
 cat <"$DIR/chrootscript" >>/mnt/chrootscript
 echo "cd /home/$USERNAME" >> /mnt/chrootscript
 echo "cp /userscript ." >> /mnt/chrootscript
